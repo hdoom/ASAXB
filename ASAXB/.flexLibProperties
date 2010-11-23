@@ -8,6 +8,8 @@
     <classEntry path="asaxb.xml.bind.Unmarshaller"/>
     <classEntry path="asaxb.xml.helpers.MarshalData"/>
     <classEntry path="asaxb.xml.helpers.XMLData"/>
+    <classEntry path="com.dsk23.util.asaxb.adapter.ByteArrayAdapter"/>
+    <classEntry path="com.hurlant.util.Base64"/>
   </includeClasses>
   <includeResources/>
   <namespaceManifests/>

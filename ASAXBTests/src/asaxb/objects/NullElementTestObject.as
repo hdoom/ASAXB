@@ -5,9 +5,7 @@ package asaxb.objects
 	public class NullElementTestObject
 	{
 		
-		public static const expectedXML:XML = <null-element-test>
-							  					<null-element></null-element>
-							  		 		  </null-element-test>;
+		public static const expectedXML:XML = <null-element-test/>;
 		
 		private var _nullElement:String;
 				

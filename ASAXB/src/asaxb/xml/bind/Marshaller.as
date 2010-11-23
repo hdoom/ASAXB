@@ -4,9 +4,11 @@ package asaxb.xml.bind
 	import asaxb.xml.helpers.MarshalData;
 	import asaxb.xml.helpers.XMLData;
 	
+    import com.dsk23.util.asaxb.adapter.ByteArrayAdapter;
+
+    import flash.utils.ByteArray;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.getQualifiedClassName;
-	import flash.xml.XMLNode;
 	import flash.xml.XMLNodeType;
 
 	public class Marshaller
@@ -21,7 +23,9 @@ package asaxb.xml.bind
 				
 		public function marshal(object:*):XML
 		{
-			
+            if (!object)
+                return null;
+
 			var name:String;
 			var element:XMLData;
 			var parentNode:XML;
@@ -46,7 +50,12 @@ package asaxb.xml.bind
 			{
 				parentNode = getParentNodeForElement(root,element);
 				marshalledValue = getElementValueFromXML(element,object);
-				if (marshalledValue is XML)
+                if (marshalledValue == null)
+                {
+                     // don't add element if it is null
+                    continue;
+                }
+				else if (marshalledValue is XML)
 				{
 					if(element.name != null) 
 					{
@@ -124,6 +133,11 @@ package asaxb.xml.bind
 		
 		private function getElementValueFromXML(element:XMLData, object:*):*
 		{
+            if (!object)
+                return null;
+
+            decorateDefaultAdapter(element);
+
 			var result:*;
 			switch (element.type)
 			{
@@ -134,6 +148,7 @@ package asaxb.xml.bind
 				case String:					
 				case Number:
 				case Date:
+                case ByteArray:
 					result = object[element.accessorName];
 					break;
 					
@@ -150,7 +165,22 @@ package asaxb.xml.bind
 			}
 			return result;
 		}
-		
+
+        /**
+         * decorate a default adapter implementation for complex types if no adapter has been specified
+         * @param element
+         */
+        private function decorateDefaultAdapter(element:XMLData):void
+        {
+            if (!element.adapter) {
+                switch (element.type) {
+                    case ByteArray:
+                        element.adapter = new ByteArrayAdapter();
+                        break;
+                }
+            }
+        }
+
 		private function getDefinition(className:String):Class
 		{
 			var klass:Class;
