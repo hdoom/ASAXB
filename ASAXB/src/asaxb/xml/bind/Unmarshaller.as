@@ -4,6 +4,10 @@ package asaxb.xml.bind
 	import asaxb.xml.helpers.MarshalData;
 	import asaxb.xml.helpers.XMLData;
 
+    import com.dsk23.util.asaxb.adapter.ByteArrayAdapter;
+
+    import flash.utils.ByteArray;
+
 	public class Unmarshaller
 	{
 		
@@ -155,6 +159,8 @@ package asaxb.xml.bind
 
 		private function getValueFromString(value:String, element:XMLData):*
 		{
+            decorateDefaultAdapter(element);
+
 			var result:*;
 			if (element.adapter)
 			{
@@ -181,6 +187,17 @@ package asaxb.xml.bind
 			return result;
 		}
 		
+        private function decorateDefaultAdapter(element:XMLData):void
+        {
+            if (!element.adapter) {
+                switch (element.type) {
+                    case ByteArray:
+                        element.adapter = new ByteArrayAdapter();
+                        break;
+                }
+            }
+        }
+
 		private function getPrimitiveTypeFromString(value:String,type:Class):*
 		{
 			var result:*;
