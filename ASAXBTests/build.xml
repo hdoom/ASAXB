@@ -34,7 +34,7 @@
 	         <include name="**/*Test.as" />
 	      </testSource>
 		  <library dir="${lib.loc}" />
-		  <library dir="${basedir}/../ASAXB/bin" />
+		  <library dir="${basedir}/../ASAXB/target/bin" />
 	   </flexunit>
 
 		<!-- Generate readable JUnit-style reports -->
